@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sådan virker den — It Can Wait</title>
+  <style>
+    :root {
+      --primary: #1C514A;
+      --primary-light: #2a7a6e;
+      --bg: #f0f7f6;
+      --card: #ffffff;
+      --text: #1a1a1a;
+      --muted: #5a7a77;
+      --accent: #e8f4f2;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    /* ── NAV ── */
+    nav {
+      background: var(--primary);
+      padding: 16px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    nav a { color: #fff; text-decoration: none; font-weight: 600; font-size: 1rem; }
+    nav .nav-links { display: flex; gap: 24px; }
+    nav .nav-links a { font-weight: 400; opacity: 0.85; font-size: 0.95rem; }
+    nav .nav-links a:hover { opacity: 1; }
+
+    /* ── HERO ── */
+    .hero {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+      color: white;
+      text-align: center;
+      padding: 64px 24px 48px;
+    }
+    .hero img {
+      width: 90px;
+      height: 90px;
+      border-radius: 20px;
+      margin-bottom: 20px;
+    }
+    .hero h1 {
+      font-size: 2.2rem;
+      font-weight: 800;
+      margin-bottom: 12px;
+      letter-spacing: -0.5px;
+    }
+    .hero p {
+      font-size: 1.1rem;
+      opacity: 0.85;
+      max-width: 520px;
+      margin: 0 auto;
+    }
+
+    /* ── SECTION ── */
+    section {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 48px 24px;
+    }
+
+    section h2 {
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 8px;
+    }
+
+    .section-label {
+      display: inline-block;
+      background: var(--primary);
+      color: white;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      padding: 4px 12px;
+      border-radius: 20px;
+      margin-bottom: 12px;
+    }
+
+    .step-description {
+      color: var(--muted);
+      font-size: 1rem;
+      margin-bottom: 28px;
+      max-width: 600px;
+    }
+
+    /* ── SCREENSHOT BLOCK ── */
+    .screenshot-block {
+      display: flex;
+      gap: 24px;
+      align-items: flex-start;
+      flex-wrap: wrap;
+    }
+
+    .screenshot-block.reverse {
+      flex-direction: row-reverse;
+    }
+
+    .screenshot-text {
+      flex: 1;
+      min-width: 240px;
+    }
+
+    .screenshot-text h3 {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 8px;
+    }
+
+    .screenshot-text p {
+      color: var(--muted);
+      font-size: 0.95rem;
+      line-height: 1.7;
+    }
+
+    .screenshot-img {
+      flex: 0 0 200px;
+      text-align: center;
+    }
+
+    .screenshot-img img {
+      width: 200px;
+      border-radius: 24px;
+      box-shadow: 0 8px 32px rgba(28,81,74,0.18);
+      border: 1px solid rgba(28,81,74,0.1);
+    }
+
+    /* Placeholder for screenshots */
+    .screenshot-placeholder {
+      width: 200px;
+      height: 380px;
+      background: linear-gradient(135deg, #d0e8e4, #b8d8d3);
+      border-radius: 24px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: var(--primary);
+      font-size: 0.8rem;
+      font-weight: 600;
+      text-align: center;
+      padding: 16px;
+      box-shadow: 0 8px 32px rgba(28,81,74,0.12);
+      gap: 8px;
+    }
+
+    .screenshot-placeholder .placeholder-icon {
+      font-size: 2rem;
+      margin-bottom: 4px;
+    }
+
+    /* ── DIVIDER ── */
+    .divider {
+      border: none;
+      border-top: 1px solid rgba(28,81,74,0.1);
+      margin: 0 24px;
+    }
+
+    /* ── STEP NUMBER ── */
+    .step-number {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      background: var(--primary);
+      color: white;
+      border-radius: 50%;
+      font-weight: 700;
+      font-size: 0.9rem;
+      margin-bottom: 12px;
+      flex-shrink: 0;
+    }
+
+    /* ── INFO BOXES ── */
+    .info-box {
+      background: var(--accent);
+      border-left: 4px solid var(--primary);
+      border-radius: 0 12px 12px 0;
+      padding: 16px 20px;
+      margin-top: 16px;
+      color: var(--primary);
+      font-size: 0.92rem;
+    }
+
+    .info-box strong { display: block; margin-bottom: 4px; }
+
+    /* ── FEATURE GRID ── */
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+      margin-top: 16px;
+    }
+
+    .feature-card {
+      background: var(--card);
+      border-radius: 16px;
+      padding: 20px;
+      box-shadow: 0 2px 12px rgba(28,81,74,0.08);
+    }
+
+    .feature-card .icon { font-size: 1.8rem; margin-bottom: 8px; }
+    .feature-card h4 { font-size: 0.95rem; font-weight: 700; color: var(--primary); margin-bottom: 4px; }
+    .feature-card p { font-size: 0.85rem; color: var(--muted); }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--primary);
+      color: rgba(255,255,255,0.7);
+      text-align: center;
+      padding: 32px 24px;
+      font-size: 0.9rem;
+    }
+    footer a { color: rgba(255,255,255,0.9); text-decoration: none; }
+    footer a:hover { text-decoration: underline; }
+
+    @media (max-width: 600px) {
+      .hero h1 { font-size: 1.7rem; }
+      .screenshot-block, .screenshot-block.reverse { flex-direction: column; align-items: center; }
+      .screenshot-img { flex: none; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="https://itcanwait.dk">🚗 It Can Wait</a>
+  <div class="nav-links">
+    <a href="https://itcanwait.dk">Forside</a>
+    <a href="https://itcanwait.dk/privacy.html">Privatliv</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <img src="icon.png" alt="It Can Wait logo" onerror="this.style.display='none'" />
+  <h1>Sådan virker den</h1>
+  <p>Fra installation til din første fokuserede køretur — en komplet guide til It Can Wait.</p>
+</div>
+
+<!-- STEP 1: INSTALLATION & TILLADELSER -->
+<section>
+  <span class="section-label">Trin 1</span>
+  <h2>Installation og tilladelser</h2>
+  <p class="step-description">
+    Første gang du åbner appen, bliver du bedt om at give de nødvendige tilladelser.
+    Det tager kun et øjeblik — og er nødvendigt for at appen kan beskytte dig under kørslen.
+  </p>
+
+  <div class="screenshot-block">
+    <div class="screenshot-text">
+      <h3>📍 Placering</h3>
+      <p>
+        Appen bruger din placering til at måle din hastighed og distance under turen.
+        Vi gemmer <strong>aldrig</strong> din GPS-rute — kun at du kørte fokuseret.
+        Vælg <em>"Tillad altid"</em> så appen kan spore turen selv når skærmen er slukket.
+      </p>
+      <div class="info-box">
+        <strong>📱 iOS bruger</strong>
+        Du vil blive sendt til Indstillinger for at vælge "Tillad altid". Det er nødvendigt for at turen virker korrekt når skærmen er slukket.
+      </div>
+    </div>
+    <div class="screenshot-img">
+      <!-- ERSTAT MED DIT SCREENSHOT: screenshot_permissions.png -->
+      <div class="screenshot-placeholder">
+        <div class="placeholder-icon">📍</div>
+        <div>Indsæt screenshot af tilladelser her</div>
+      </div>
+    </div>
+  </div>
+
+  <br/>
+
+  <div class="screenshot-block reverse">
+    <div class="screenshot-text">
+      <h3>🛡️ Skærm-tid (iOS) / App-brug (Android)</h3>
+      <p>
+        For at blokere distraherende apps under kørslen kræver appen adgang til Skærm-tid på iOS
+        eller App-brug på Android. Du bekræfter dette med Face ID / fingeraftryk.
+        Blokeringen aktiveres KUN under aktive køreture.
+      </p>
+    </div>
+    <div class="screenshot-img">
+      <!-- ERSTAT MED DIT SCREENSHOT: screenshot_family_controls.png -->
+      <div class="screenshot-placeholder">
+        <div class="placeholder-icon">🛡️</div>
+        <div>Indsæt screenshot af skærm-tid tilladelse her</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider" />
+
+<!-- STEP 2: LOG IND -->
+<section>
+  <span class="section-label">Trin 2</span>
+  <h2>Log ind</h2>
+  <p class="step-description">
+    It Can Wait bruger SMS-verifikation til login. Ingen adgangskode nødvendig — bare dit telefonnummer.
+  </p>
+
+  <div class="screenshot-block">
+    <div class="screenshot-text">
+      <h3>📱 SMS-verifikation</h3>
+      <p>
+        Indtast dit telefonnummer med landekode (fx +45) og tryk <em>"Send SMS kode"</em>.
+        Du modtager en 6-cifret kode på SMS, som du indtaster for at logge ind.
+        Hurtig, sikker og uden behov for adgangskode.
+      </p>
+      <div class="info-box">
+        <strong>🔒 Én konto pr. enhed</strong>
+        For at sikre fair spil kan du kun have én aktiv konto pr. telefon. Dette forhindrer at man har én telefon til at spore turen og en anden til frit at bruge sin telefon under kørslen.
+      </div>
+    </div>
+    <div class="screenshot-img">
+      <!-- ERSTAT MED DIT SCREENSHOT: screenshot_login.png -->
+      <div class="screenshot-placeholder">
+        <div class="placeholder-icon">📱</div>
+        <div>Indsæt screenshot af login-skærm her</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider" />
+
+<!-- STEP 3: HJEMSKÆRMEN -->
+<section>
+  <span class="section-label">Trin 3</span>
+  <h2>Hjemskærmen</h2>
+  <p class="step-description">
+    Hjemskærmen viser din ugentlige fokusrate, dine FokusLodder og ugens præmie fra sponsoren.
+  </p>
+
+  <div class="screenshot-block reverse">
+    <div class="screenshot-text">
+      <h3>🏠 Overblik</h3>
+      <p>
+        Øverst ser du din <strong>ugentlige fokusrate</strong> — et gennemsnit af dine fokusscorer for ugen.
+        Nedenunder ses dine <strong>FokusLodder</strong>, som er dine lodder til den ugentlige lodtrækning.
+        Sponsorbanneret viser ugens præmie og sponsor.
+      </p>
+    </div>
+    <div class="screenshot-img">
+      <!-- ERSTAT MED DIT SCREENSHOT: screenshot_home.png -->
+      <div class="screenshot-placeholder">
+        <div class="placeholder-icon">🏠</div>
+        <div>Indsæt screenshot af hjemskærm her</div>
+      </div>
+    </div>
+  </div>
+
+  <br/>
+
+  <div class="screenshot-block">
+    <div class="screenshot-text">
+      <h3>🏆 Sponsor og præmie</h3>
+      <p>
+        Sponsorbanneret viser ugens præmie og sponsor. Tryk på banneret for at besøge sponsors hjemmeside.
+        Præmien skifter ugentligt og kan være alt fra gavekort til produkter.
+        Når der ikke er en aktiv sponsor vises It Can Wait's eget banner.
+      </p>
+    </div>
+    <div class="screenshot-img">
+      <!-- ERSTAT MED DIT SCREENSHOT: screenshot_sponsor.png -->
+      <div class="screenshot-placeholder">
+        <div class="placeholder-icon">🏆</div>
+        <div>Indsæt screenshot af sponsor banner her</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider" />
+
+<!-- STEP 4: START KØRETUR -->
+<section>
+  <span class="section-label">Trin 4</span>
+  <h2>Start en køretur</h2>
+  <p class="step-description">
+    Tryk på "Start køretur" når du sætter dig i bilen. Appen klargøres og begynder at spore din tur.
+  </p>
+
+  <div class="screenshot-block reverse">
+    <div class="screenshot-text">
+      <h3>🚗 Klargøring</h3>
+      <p>
+        Når du trykker start, begynder appen at klargøre sig.
+        Distraherende apps blokeres automatisk, og Forstyr Ikke aktiveres.
+        Du kan kun starte turen når du holder stille — appen tjekker at du ikke allerede er i bevægelse.
+      </p>
+      <div class="info-box">
+        <strong>⏸ Hold stille for at starte</strong>
+        Knappen er kun aktiv når du holder stille. Dette sikrer at du ikke starter turen mens du allerede kører.
+      </div>
+    </div>
+    <div class="screenshot-img">
+      <!-- ERSTAT MED DIT SCREENSHOT: screenshot_start.png -->
+      <div class="screenshot-placeholder">
+        <div class="placeholder-icon">🚗</div>
+        <div>Indsæt screenshot af start køretur her</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider" />
+
+<!-- STEP 5: UNDER TUREN -->
+<section>
+  <span class="section-label">Trin 5</span>
+  <h2>Under turen</h2>
+  <p class="step-description">
+    Mens du kører vises et grønt overlay. Distraherende apps er blokerede — du kan kun se nødopkald og navigation.
+  </p>
+
+  <div class="screenshot-block">
+    <div class="screenshot-text">
+      <h3>🔒 Kørsel skærm</h3>
+      <p>
+        Skærmen viser en simpel grøn baggrund med teksten <em>"Hold fokus – Ikke telefonen"</em>.
+        Stop-knappen er låst mens du kører og aktiveres først når du holder stille.
+        Øverst i hjørnet finder du GPS-opdateringsknappen hvis GPS-signalet skulle fryse.
+      </p>
+    </div>
+    <div class="screenshot-img">
+      <!-- ERSTAT MED DIT SCREENSHOT: screenshot_driving.png -->
+      <div class="screenshot-placeholder">
+        <div class="placeholder-icon">🔒</div>
+        <div>Indsæt screenshot af kørsel overlay her</div>
+      </div>
+    </div>
+  </div>
+
+  <br/>
+
+  <div class="screenshot-block reverse">
+    <div class="screenshot-text">
+      <h3>⛔ Stop knappen aktiveres</h3>
+      <p>
+        Når du holder stille skifter stop-knappen til rød og kan trykkes.
+        Teksten ændres fra <em>"Hold stille for at stoppe"</em> til <em>"Stop turen"</em>.
+        Dette sikrer at turen kun kan stoppes når bilen holder stille — for din sikkerhed.
+      </p>
+    </div>
+    <div class="screenshot-img">
+      <!-- ERSTAT MED DIT SCREENSHOT: screenshot_stopped.png -->
+      <div class="screenshot-placeholder">
+        <div class="placeholder-icon">⛔</div>
+        <div>Indsæt screenshot af stop aktiveret her</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider" />
+
+<!-- STEP 6: TURRESULTAT -->
+<section>
+  <span class="section-label">Trin 6</span>
+  <h2>Turresultat og cooldown</h2>
+  <p class="step-description">
+    Efter turen ser du dit resultat — fokusscore, distance og eventuelle strafpoint.
+  </p>
+
+  <div class="screenshot-block">
+    <div class="screenshot-text">
+      <h3>📊 Fokusscore</h3>
+      <p>
+        Din fokusscore beregnes ud fra om du forsøgte at åbne blokerede apps under turen.
+        En perfekt tur giver 100% fokusscore. Forsøg på at omgå blokeringen giver strafpoint.
+        Efter turen vises din score, distance og varighed.
+      </p>
+      <div class="info-box">
+        <strong>⏳ Cooldown på 2 minutter</strong>
+        Efter en tur er der en kort cooldown på 2 minutter før du kan starte en ny tur. Dette forhindrer misbrug og sikrer at GPS-data nulstilles korrekt.
+      </div>
+    </div>
+    <div class="screenshot-img">
+      <!-- ERSTAT MED DIT SCREENSHOT: screenshot_recap.png -->
+      <div class="screenshot-placeholder">
+        <div class="placeholder-icon">📊</div>
+        <div>Indsæt screenshot af turresultat her</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider" />
+
+<!-- STEP 7: UGENTLIG RECAP -->
+<section>
+  <span class="section-label">Trin 7</span>
+  <h2>Ugentlig opsummering</h2>
+  <p class="step-description">
+    Hver mandag vises en opsummering af din foregående uge — og du optjener FokusLodder til lodtrækningen!
+  </p>
+
+  <div class="screenshot-block reverse">
+    <div class="screenshot-text">
+      <h3>📅 Ugeoversigt</h3>
+      <p>
+        Den ugentlige opsummering viser antal ture, samlet distance og gennemsnitlig fokusscore for ugen.
+        Baseret på din indsats optjener du FokusLodder til den ugentlige lodtrækning.
+        Jo flere ture og jo bedre fokus — jo flere lodder!
+      </p>
+    </div>
+    <div class="screenshot-img">
+      <!-- ERSTAT MED DIT SCREENSHOT: screenshot_weekly.png -->
+      <div class="screenshot-placeholder">
+        <div class="placeholder-icon">📅</div>
+        <div>Indsæt screenshot af ugentlig recap her</div>
+      </div>
+    </div>
+  </div>
+
+  <br/>
+
+  <div class="feature-grid">
+    <div class="feature-card">
+      <div class="icon">🎯</div>
+      <h4>5+ ture</h4>
+      <p>+2 FokusLodder bonus for ugen</p>
+    </div>
+    <div class="feature-card">
+      <div class="icon">🔥</div>
+      <h4>8+ ture</h4>
+      <p>+4 FokusLodder bonus for ugen</p>
+    </div>
+    <div class="feature-card">
+      <div class="icon">⭐</div>
+      <h4>12+ ture</h4>
+      <p>+6 FokusLodder bonus for ugen</p>
+    </div>
+  </div>
+</section>
+
+<hr class="divider" />
+
+<!-- STEP 8: LODTRÆKNING -->
+<section>
+  <span class="section-label">Trin 8</span>
+  <h2>Ugentlig lodtrækning</h2>
+  <p class="step-description">
+    Hver uge trækkes der lod blandt alle deltagere. Jo flere FokusLodder du har — jo større chance for at vinde!
+  </p>
+
+  <div class="screenshot-block">
+    <div class="screenshot-text">
+      <h3>🎰 FokusLodder</h3>
+      <p>
+        Du optjener FokusLodder for hver fokuseret tur du gennemfører.
+        Lodder akkumuleres gennem ugen og bruges til den ugentlige lodtrækning.
+        Vinderen kontaktes direkte af It Can Wait og præmien udleveres fra sponsoren.
+      </p>
+      <div class="info-box">
+        <strong>🏆 Vinderen kontaktes</strong>
+        Hvis du vinder bliver du kontaktet på den email du har registreret i appen. Sørg for at din email er korrekt under Profil.
+      </div>
+    </div>
+    <div class="screenshot-img">
+      <!-- ERSTAT MED DIT SCREENSHOT: screenshot_fokusloeder.png -->
+      <div class="screenshot-placeholder">
+        <div class="placeholder-icon">🎰</div>
+        <div>Indsæt screenshot af FokusLodder her</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider" />
+
+<!-- STEP 9: PROFIL & INDSTILLINGER -->
+<section>
+  <span class="section-label">Ekstra</span>
+  <h2>Profil og indstillinger</h2>
+  <p class="step-description">
+    Under profil kan du se dine livstidsstatistikker. Under indstillinger kan du skifte tema og slette din konto.
+  </p>
+
+  <div class="screenshot-block reverse">
+    <div class="screenshot-text">
+      <h3>👤 Profil</h3>
+      <p>
+        Din profil viser dine samlede statistikker — antal ture, samlet distance og totale FokusLodder
+        siden du begyndte at bruge appen. Statistikkerne opdateres ved ugeskifte.
+      </p>
+    </div>
+    <div class="screenshot-img">
+      <!-- ERSTAT MED DIT SCREENSHOT: screenshot_profile.png -->
+      <div class="screenshot-placeholder">
+        <div class="placeholder-icon">👤</div>
+        <div>Indsæt screenshot af profil her</div>
+      </div>
+    </div>
+  </div>
+
+  <br/>
+
+  <div class="screenshot-block">
+    <div class="screenshot-text">
+      <h3>⚙️ Indstillinger</h3>
+      <p>
+        Under indstillinger kan du slå mørkt tema til og fra.
+        Du kan også slette din konto og alle tilhørende data permanent (GDPR-ret til sletning).
+        Kontakt os på bo@itcanwait.dk hvis du har spørgsmål.
+      </p>
+    </div>
+    <div class="screenshot-img">
+      <!-- ERSTAT MED DIT SCREENSHOT: screenshot_settings.png -->
+      <div class="screenshot-placeholder">
+        <div class="placeholder-icon">⚙️</div>
+        <div>Indsæt screenshot af indstillinger her</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider" />
+
+<!-- CTA -->
+<section style="text-align: center; padding: 48px 24px;">
+  <h2 style="margin-bottom: 12px;">Klar til at køre fokuseret?</h2>
+  <p style="color: var(--muted); margin-bottom: 32px; max-width: 480px; margin-left: auto; margin-right: auto;">
+    Download It Can Wait og begynd at optjene FokusLodder fra din første tur.
+  </p>
+  <div style="display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;">
+    <a href="#" style="background: var(--primary); color: white; padding: 14px 28px; border-radius: 14px; text-decoration: none; font-weight: 700; font-size: 1rem;">
+      🍎 App Store
+    </a>
+    <a href="#" style="background: var(--primary); color: white; padding: 14px 28px; border-radius: 14px; text-decoration: none; font-weight: 700; font-size: 1rem;">
+      🤖 Google Play
+    </a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p>© 2026 It Can Wait &nbsp;|&nbsp; <a href="https://itcanwait.dk/privacy.html">Privatlivspolitik</a> &nbsp;|&nbsp; <a href="mailto:bo@itcanwait.dk">bo@itcanwait.dk</a></p>
+</footer>
+
+</body>
+</html>
